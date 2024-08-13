@@ -2,7 +2,12 @@ services:
   minecraft:
     build: .
     ports:
-      - 25565:25565
-      - 25575:25575
+      - 25565
+      - 25575
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${HASH}.rule=Host(`${MC_HOST}`)
+      - traefik.http.services.${HASH}.loadbalancer.server.port=25565
+      - traefik.http.services.${HASH}.loadbalancer.server.port=25575
     volumes:
       - ./server:/mc
